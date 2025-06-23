@@ -1,20 +1,24 @@
-import React from 'react'
+import React from "react";
 
 const Navbar = () => {
-    const menuItems = [
-        {
-            name: "Add restaurant",
-            url: "/",
-        },
-        {
-            name: "Search",
-            url: "/search",
-        },
-        {
-            name: "About Us",
-            url: "/",
-        }
-    ];
+  const menuItems = [
+    {
+      id: 1,
+      name: "Add restaurant",
+      action: "/",
+    },
+    {
+      id: 2,
+      name: "Search",
+      action: "/search",
+    },
+    {
+      id: 3,
+      name: "About Us",
+      action: "() => setPopup(true)",
+    },
+  ];
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
@@ -41,7 +45,7 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             {menuItems.map((item) => (
-              <li>
+              <li key={item.id}>
                 <a href={item.url}>{item.name}</a>
               </li>
             ))}
@@ -52,7 +56,7 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           {menuItems.map((item) => (
-            <li>
+            <li key={item.id}>
               <a href={item.url}>{item.name}</a>
             </li>
           ))}
@@ -64,6 +68,6 @@ const Navbar = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Navbar
+export default Navbar;

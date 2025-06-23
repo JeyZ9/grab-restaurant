@@ -1,12 +1,12 @@
 import React from 'react'
 
 const Card = (props) => {
-    const { title, img, type } = props;
+    const { id, title, img, type, deleteRestaurant } = props;
   return (
     <>
-      <div className="card bg-base-100 w-96 shadow-sm">
-        <figure className='overflow-hidden h-50'>
-          <img className='w-full object-cover' src={img} alt="Shoes" />
+      <div className="card bg-base-100 h-[384px] w-96 shadow-sm">
+        <figure className="overflow-hidden h-50">
+          <img className="w-full object-cover" src={img} alt="Shoes" />
         </figure>
         <div className="card-body">
           <h2 className="card-title">
@@ -15,7 +15,12 @@ const Card = (props) => {
           </h2>
           <p>{type}</p>
           <div className="card-actions justify-end">
-            <button className="btn btn-outline btn-error">Delete</button>
+            <button
+              className="btn btn-outline btn-error"
+              onClick={() => deleteRestaurant(id)}
+            >
+              Delete
+            </button>
             <button className="btn btn-outline btn-warning">Edit</button>
           </div>
         </div>

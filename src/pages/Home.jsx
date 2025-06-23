@@ -1,11 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../component/Navbar'
 import Restaurant from '../component/Restaurant';
+import RestaurantForm from '../component/RestaurantForm';
+import axios from 'axios';
+// import axios from 'axios';
 // import Card from '../component/Card'
 
 const Home = () => {
+
+  const [restaurants, setRestaurant] = useState([]);
+  const [ popup, setPopup ] = useState(false);
+
+  const addRestaurant = async (data) => {
+    const response = await axios.post("http://localhost:8080/restaurants", data);
+    return response.data
+  }
+
+  useEffect(() => {
+    // get all restaurants
+    fetch("http://localhost:8080/restaurants").then((res) => {
+      return res.json();
+    }).then((response) => {
+      setRestaurant(response);
+    }).catch((err) => {
+      console.log(err.message);
+    })
+
+  }, [])
+
+  console.log(restaurants);
+
+
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto relative overflow-x-hidden">
       <Navbar />
       <div>
         {/* Hearder */}
@@ -39,8 +66,23 @@ const Home = () => {
         </div>
       </div>
 
+      <button
+        className="btn btn-info text-white"
+        onClick={() => setPopup(!popup)}
+      >
+        Add
+      </button>
+
+      {popup && (
+        <div className="fixed w-screen h-screen bg-[#909090]/50 z-1 left-0 top-0 flex justify-center items-center">
+          <RestaurantForm setPopup={setPopup} addRestaurant={addRestaurant} />
+        </div>
+      )}
+
       {/* Result */}
-      <Restaurant />
+      <Restaurant
+        restaurants={restaurants}
+      />
     </div>
   );
 }

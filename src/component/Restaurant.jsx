@@ -1,14 +1,35 @@
 import React from 'react'
 import Card from './Card';
-import db from '../db.json';
+import axios from 'axios';
 
-const Restaurant = () => {
+const Restaurant = (props) => {
+
+  const { restaurants } = props;
+
+  console.log(restaurants);
+
+  
+  const deleteRestaurant = async (id) => {
+    const response = await axios.delete(
+      `http://localhost:8080/restaurants/${id}`
+    );
+    return response.data;
+  };
+
   return (
-    <div className="flex">
-      <div className="flex flex-wrap justify-center gap-4">
-        {db.restaurants.map((item) => (
-            <Card title={item.title} img={item.img} type={item.type} />
-        ))}
+    <div className="flex justify-center">
+      <div className="flex flex-wrap justify-center gap-4 items-center">
+        {restaurants &&
+          restaurants.map((restaurant) => (
+            <Card
+              deleteRestaurant={deleteRestaurant}
+              key={restaurant.id}
+              id={restaurant.id}
+              title={restaurant.title}
+              img={restaurant.img}
+              type={restaurant.type}
+            />
+          ))}
       </div>
     </div>
   );
