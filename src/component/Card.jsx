@@ -1,7 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router';
 
 const Card = (props) => {
-    const { id, title, img, type, deleteRestaurant } = props;
+    const { id, title, img, type, deleteRestaurant, setPopup } = props;
+
   return (
     <>
       <div className="card bg-base-100 h-[384px] w-96 shadow-sm">
@@ -21,7 +23,13 @@ const Card = (props) => {
             >
               Delete
             </button>
-            <button className="btn btn-outline btn-warning">Edit</button>
+            <Link
+              to={`/update/${id}`}
+              onClick={() => setPopup(true)}
+              className="btn btn-outline btn-warning"
+            >
+              Edit
+            </Link>
           </div>
         </div>
       </div>

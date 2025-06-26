@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const Restaurant = (props) => {
 
-  const { restaurants } = props;
+  const { restaurants, setEdit, setPopup } = props;
 
   console.log(restaurants);
 
@@ -28,6 +28,8 @@ const Restaurant = (props) => {
               title={restaurant.title}
               img={restaurant.img}
               type={restaurant.type}
+              setPopup={setPopup}
+              setEdit={setEdit}
             />
           ))}
       </div>

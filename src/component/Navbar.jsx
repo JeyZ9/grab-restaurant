@@ -1,23 +1,30 @@
 import React from "react";
 
-const Navbar = () => {
+const Navbar = (props) => {
+  const { setPopup } = props;
   const menuItems = [
     {
       id: 1,
       name: "Add restaurant",
-      action: "/",
+      url: "/",
     },
     {
       id: 2,
       name: "Search",
-      action: "/search",
+      url: "/search",
     },
     {
       id: 3,
       name: "About Us",
-      action: "() => setPopup(true)",
+      url: "/",
     },
   ];
+
+  const handleOnClick = (id) => {
+    if(String(id) === "1") {
+      setPopup(true);
+    }
+  }
 
   return (
     <div className="navbar bg-base-100 shadow-sm">
@@ -45,20 +52,28 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             {menuItems.map((item) => (
-              <li key={item.id}>
-                <a href={item.url}>{item.name}</a>
-              </li>
+              <ul key={item.id}>
+                <li>
+                  <button onClick={() => handleOnClick(item.id)}>
+                    {item.name}
+                  </button>
+                </li>
+              </ul>
             ))}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Grab restaurant</a>
+        <a href="/" className="btn btn-ghost text-xl">Grab restaurant</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           {menuItems.map((item) => (
-            <li key={item.id}>
-              <a href={item.url}>{item.name}</a>
-            </li>
+            <ul key={item.id} className="flex gap-2">
+              <li>
+                <button onClick={() => handleOnClick(item.id)}>
+                  {item.name}
+                </button>
+              </li>
+            </ul>
           ))}
         </ul>
       </div>

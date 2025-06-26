@@ -9,6 +9,7 @@ import axios from 'axios';
 const Home = () => {
 
   const [restaurants, setRestaurant] = useState([]);
+  const [ filRestaurants, setFilRestaurants ] = useState([]);
   const [ popup, setPopup ] = useState(false);
 
   const addRestaurant = async (data) => {
@@ -22,18 +23,33 @@ const Home = () => {
       return res.json();
     }).then((response) => {
       setRestaurant(response);
+      setFilRestaurants(response);
     }).catch((err) => {
       console.log(err.message);
     })
 
   }, [])
 
+  const handleSearch = (keyword) => {
+
+    if(keyword === ""){
+      setFilRestaurants(restaurants);
+      return;
+    }
+    const response = restaurants.filter((restaurant) =>
+      restaurant.title.toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    setFilRestaurants(response);
+  };
+
+
   console.log(restaurants);
 
 
   return (
     <div className="container mx-auto relative overflow-x-hidden">
-      <Navbar />
+      <Navbar setPopup={setPopup} />
       <div>
         {/* Hearder */}
         <div>
@@ -61,17 +77,22 @@ const Home = () => {
                 <path d="m21 21-4.3-4.3"></path>
               </g>
             </svg>
-            <input type="search" required placeholder="Search" />
+            <input
+              type="search"
+              required
+              placeholder="Search"
+              onChange={(e) => handleSearch(e.target.value)}
+            />
           </label>
         </div>
       </div>
 
-      <button
+      {/* <button
         className="btn btn-info text-white"
         onClick={() => setPopup(!popup)}
       >
         Add
-      </button>
+      </button> */}
 
       {popup && (
         <div className="fixed w-screen h-screen bg-[#909090]/50 z-1 left-0 top-0 flex justify-center items-center">
@@ -80,9 +101,7 @@ const Home = () => {
       )}
 
       {/* Result */}
-      <Restaurant
-        restaurants={restaurants}
-      />
+      <Restaurant restaurants={filRestaurants} setPopup={setPopup} />
     </div>
   );
 }

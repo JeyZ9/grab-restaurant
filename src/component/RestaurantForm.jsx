@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router';
 
 const RestaurantForm = (props) => {
   const { setPopup, addRestaurant } = props;
@@ -9,8 +11,38 @@ const RestaurantForm = (props) => {
     img: ""
   });
 
+  const { id } = useParams();
+
+  console.log(typeof(id));
+
+    const updateRestaurant = async (id, data) => {
+      const response = await axios.put(
+        `http://localhost:8080/restaurants/${id}`,
+        data
+      );
+      return response.data;
+    };
+
+  useEffect(() => {
+      const getById = async (id) => {
+        try {
+          const response = await axios.get(
+            `http://localhost:8080/restaurants/${id}`
+          );
+          setRestaurant(response.data);
+        } catch (error) {
+          console.error("Error ", error);
+        }
+      };
+      getById(id);
+  }, [id])
+
   const hanbleOnClick = () => {
-    addRestaurant(restaurant);
+    if(id !== undefined) {
+      updateRestaurant(id, restaurant);
+    }else{
+      addRestaurant(restaurant);
+    }
   }
 
   const hanblechange = (e) => {
@@ -62,15 +94,16 @@ const RestaurantForm = (props) => {
             className="btn btn-error btn-outline w-full"
             onClick={() => setPopup(false)}
           >
-            cancle
+            cancel
           </button>
-          <button
+          <Link
+            to={`/`}
             onClick={hanbleOnClick}
             type="submit"
             className="btn btn-accent w-full text-white"
           >
-            Submit
-          </button>
+            {id ? "Update" : "Add"}
+          </Link>
         </div>
       </fieldset>
     </>
